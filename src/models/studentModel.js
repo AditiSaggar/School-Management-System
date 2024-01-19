@@ -7,41 +7,39 @@ const studentSchema =  new mongoose.Schema({
         default: ()=> nanoid(),
     },
     name: {
-        type: string,
+        type:String,
         required: true
     },
     address: {
-        type: string,
+        type:String,
         required: true,
         unique:false
     },
     contact:{
-        type:number,
+        type:Number,
         required:true
     },
-    Gender:{
-        type:boolean,        
+    gender:{
+        type:Boolean,        
     },
     address:{
-        type:string
+        type:String,
     },
     classId: {
-        type: string,
+        type:String,
         ref: 'classModel',
         required: true,
-        
     },
-     
     secId:{
-        type: string,
+        type:String,
         ref: 'sectionModel',
         required: true,
     }, 
-    subId:{
-        type: string,
-        ref: 'subjectModel',
-        required: true,
-    },
+    // subId:{
+    //     type:String,
+    //     ref: 'subjectModel',
+    //     required: true,
+    // },
 
 });
 

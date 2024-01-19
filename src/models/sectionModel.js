@@ -7,16 +7,11 @@ const sectionSchema =  new mongoose.Schema({
         default: ()=> nanoid(),
     },
     section: {
-        type: string,
+        type:String,
         required: true
     },
-    address: {
-        type: string,
-        required: true,
-        unique:false
-    },
     classId: {
-        type: string,
+        type:String,
         ref: 'classModel',
         required: true,
     }   

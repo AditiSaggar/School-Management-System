@@ -1,23 +1,26 @@
-const { string } = require('joi');
 const mongoose = require('mongoose');
 const { nanoid } =require ('nanoid');
 
 const classSchema =  new mongoose.Schema({
     _id:{
-        type:string,
+        type:String,
         default: ()=> nanoid(),
     },
-    Grade: {
-        type: string,
+    grade: {
+        type: String,
         required: true
     },
     schoolId: {
-        type: string,
+        type: String,
         ref: 'schoolModel',
         required: true,
+    },
+    isActive:{
+        type:Boolean,
+        default:true
     }      
 });
 
-const classSch = mongoose.model("classlModel", classSchema);
+const classSch = mongoose.model("classModel", classSchema);
 module.exports = classSch;
 

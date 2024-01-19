@@ -1,28 +1,27 @@
 const mongoose = require('mongoose');
-const { nanoid } =require ('nanoid');
+const { nanoid } = require ('nanoid');
 
 const schoolSchema =  new mongoose.Schema({
     _id:{
-        type:string,
+        type:String,
         default: ()=> nanoid(),
     },
     name: {
-        type: string,
+        type:String,
         required: true
     },
     address: {
-        type: string,
+        type:String,
         required: true,
-        unique:false
+        
     },
-
     email: {
-        type: string,
+        type:String,
         required: true,
         unique:true
     },
     password: {
-        type: String,
+        type:String,
         required: true
     },
     contact: {
@@ -31,10 +30,16 @@ const schoolSchema =  new mongoose.Schema({
         unique:true
     },
     image: {
-        type: string,
+        type:String,
+        required:true
     },
     banner:{
-        type: string
+        type:String,
+        required:true
+    },
+    isActive:{
+        type:Boolean,
+        default:true
     }
      
 });

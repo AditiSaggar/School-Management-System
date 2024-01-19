@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const express =require('express');
 const dotenv = require ('dotenv');
-//const userRoute = require('./src/Routes')
+const schoolRoute = require('./src/routes')
 
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
-// app.use("/", userRoute);
+app.use(schoolRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,() =>{
