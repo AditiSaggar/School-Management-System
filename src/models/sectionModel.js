@@ -6,7 +6,7 @@ const sectionSchema =  new mongoose.Schema({
         type:String,
         default: ()=> nanoid(),
     },
-    section: {
+    name: {
         type:String,
         required: true
     },
@@ -14,7 +14,11 @@ const sectionSchema =  new mongoose.Schema({
         type:String,
         ref: 'classModel',
         required: true,
-    }   
+    },  
+    slug:{
+        type:String,
+        slug:'name'
+    }
 });
 
 const section = mongoose.model("sectionModel", sectionSchema);

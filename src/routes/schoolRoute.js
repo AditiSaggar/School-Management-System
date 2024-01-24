@@ -17,5 +17,16 @@ router.post('/newsection',controllers.sectionController.createSection)
 //Create Student
 router.post('/newstudent',controllers.studentController.createStudent)
 
+//Update School
+router.put('/update/:id',controllers.schoolController.updateSchool)
+
+//Update Class
+router.put('/updateCls/:id',controllers.classController.updateClass)
+
+//Update Section
+router.put('/updateSect/:id',controllers.sectionController.updateSection)
+
+//Update Student
+router.put('/updateStu/:id',controllers.studentController.updateStudent)
 
 module.exports = router;

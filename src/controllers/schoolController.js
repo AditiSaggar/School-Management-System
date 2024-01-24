@@ -70,7 +70,7 @@ const createSchool = async(req,res) =>{
 
 
 //Login School
-const loginSchool= async (req, res) => {
+const loginSchool = async (req, res) => {
     
     try {
         const { email, password } = req.body;
@@ -116,9 +116,38 @@ const loginSchool= async (req, res) => {
     }
 };
 
+//Update School
+
+const updateSchool= async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedSchool = await schoolModel.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!updatedSchool) {
+      return res.status(404).json({
+        status:false, 
+        message: 'School not found' });
+    }else{
+        return res.status(200).json({
+            updatedSchool
+        });
+    }
+  
+  } catch (error) {
+    return res.status(500).json({ 
+        status:false,
+        message: 'Internal Server Error', 
+        error: error.message 
+    });
+  }
+};
+
+
 
 
 module.exports= {
     createSchool,
-    loginSchool
+    loginSchool,
+    updateSchool
 }

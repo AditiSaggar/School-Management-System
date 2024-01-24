@@ -26,7 +26,7 @@ To refresh the project :npx nodemon
 Testing in the Postman:
 To check the API is working or not: 
 
-1) SIGU_UP
+1) SIGU_UP::Create Class
 Method used: Post
 Url :http://localhost:3000/school/signup
 Response:School is created successfully
@@ -47,3 +47,4 @@ Response:Section created successfully
 5)Create Student
 Url:http://localhost:3000/school/newstudent
 Response:Student created successfully
+

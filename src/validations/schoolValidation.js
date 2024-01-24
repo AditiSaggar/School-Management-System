@@ -37,6 +37,9 @@ const valStudent = Joi.object({
     email: Joi.string().email().lowercase().required().description("email should be unique"),
     password: Joi.string().min(6).required(),
     contact:Joi.number().integer().min(100000000).max(9999999999).required(),
+    gender:Joi.string().required(),
+    classId:Joi.string().required(),
+    secId:Joi.string().required(),
 
 })
 

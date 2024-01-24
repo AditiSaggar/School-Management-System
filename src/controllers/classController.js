@@ -1,8 +1,13 @@
 const classModel = require('../models/classModel')
-const valclass = require('../validations/schoolValidation')
+const schoolModel = require('../models/schoolModel')
+// const valclass = require('../validations/schoolValidation')
+const slugify = require('slugify');
 
 
+
+//Create Class
 const createClass = async (req, res) => {
+
     // const { error } = valclass.validate(req.body);
     // // console.log("error", error)
     // if (error) {
@@ -14,16 +19,41 @@ const createClass = async (req, res) => {
     //     });
     // }
 
-    const { grade, schoolId } = req.body;
     
     try {
-       
-        let newClass = await classModel.findOne( { grade, schoolId })
+        const { name, schoolId } = req.body;
+
+        const isSchool = await schoolModel.findOne({ '_id': schoolId });
+          
+
+        //Create slug
+        const slug = slugify(name, {
+            replacement:'-',
+            lower: true
+        });
+
+    const isSlug = await classModel.findOne({'slug': slug});
+    if (isSlug){
+      return res.status(400).json({
+        status:false,
+        message: 'slug is already created'
+    })
+    }
+
+    if (!isSchool) {
+      return res.json({
+        status:false,
+        message: "School not exists"
+      });
+    }
+
+        let newClass = await classModel.findOne( { name, schoolId })
         
         if (!newClass) {
             const newClass = await classModel.create({
-                grade,
-                schoolId
+                name,
+                schoolId,
+                slug
             })
 
             res.status(200).json({
@@ -34,7 +64,7 @@ const createClass = async (req, res) => {
         } else {
             res.status(400).json({ 
                 status: false,
-                error:"className should be unique"
+                error:"ClassName should be unique"
             });
         }
     } catch (error) {
@@ -46,9 +76,40 @@ const createClass = async (req, res) => {
     }
 }
 
+//Update Class
+const updateClass= async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+        // const{ name, schoolId} = req.body;
+      const updatedClass = await classModel.findByIdAndUpdate(id, req.body, { new: true });
+  
+      if (!updatedClass) {
+        return res.status(404).json({
+          status:false, 
+          message: 'Class not found' });
+      }else{
+          return res.status(200).json({
+            status:true,
+            message:'Class is Upated successfully',
+              updatedClass
+          });
+      }
+    
+    } catch (error) {
+      return res.status(500).json({ 
+          status:false,
+          message: 'Internal Server Error', 
+          error: error.message 
+      });
+    }
+  };
 
+
+   
 
 
 module.exports={
-    createClass
+    createClass,
+    updateClass
 }

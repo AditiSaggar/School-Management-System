@@ -1,12 +1,14 @@
 const studentModel = require('../models/studentModel')
+const classModel = require('../models/classModel')
+const sectionModel=require('../models/sectionModel')
 const { valStudent} = require ('../validations/schoolValidation')
 
 
 //Create Student
 const createStudent = async (req, res) => {
     try {
-        const { name, address, contact, gender, classId, secId } = req.body;
-        const { error } = valSection.validate(req.body);
+        const { name, email,password,address, contact, gender, classId, secId } = req.body;
+        const { error } = valStudent.validate(req.body);
         // console.log("error", error)
         if (error) {
              // console.log("error", error.message)
@@ -28,7 +30,7 @@ const createStudent = async (req, res) => {
         });
       }
       const newStudent = new studentModel({
-        name,address,contact,gender,classId,secId,
+        name,email,password,address,contact,gender,classId,secId,
       });
   
       const savedStudent = await newStudent.save();
@@ -55,9 +57,36 @@ const createStudent = async (req, res) => {
     }
   };
   
+//Update Student
+
+
+const updateStudent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedStudent = await studentModel.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!updatedStudent) {
+      return res.status(404).json({ 
+        status:false,
+        message: 'Student not found'
+       });
+    }
+
+    return res.status(200).json(updatedStudent);
+  } catch (error) {
+    return res.status(500).json({ 
+      status:false,
+      message: 'Internal Server Error', 
+      error: error.message });
+  }
+};
+
+
 
 
 
 module.exports={
-    createStudent
+    createStudent,
+    updateStudent
 }

@@ -10,6 +10,16 @@ const studentSchema =  new mongoose.Schema({
         type:String,
         required: true
     },
+    email: {
+        type:String,
+        required: true,
+        unique:true
+    },
+    password: {
+        type:String,
+        required: true,
+        unique:true
+    },
     address: {
         type:String,
         required: true,
@@ -17,13 +27,11 @@ const studentSchema =  new mongoose.Schema({
     },
     contact:{
         type:Number,
-        required:true
+        required:true,
+        unique:true
     },
     gender:{
         type:Boolean,        
-    },
-    address:{
-        type:String,
     },
     classId: {
         type:String,

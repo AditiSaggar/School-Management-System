@@ -6,7 +6,7 @@ const classSchema =  new mongoose.Schema({
         type:String,
         default: ()=> nanoid(),
     },
-    grade: {
+    name: {
         type: String,
         required: true
     },
@@ -18,6 +18,10 @@ const classSchema =  new mongoose.Schema({
     isActive:{
         type:Boolean,
         default:true
+    },
+    slug:{
+        type:String,
+        slug:'name'
     }      
 });
 
