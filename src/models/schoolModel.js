@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { nanoid } = require ('nanoid');
+const timeStamp = require('../utlis/moment')
 
 const schoolSchema =  new mongoose.Schema({
     _id:{
@@ -40,7 +41,8 @@ const schoolSchema =  new mongoose.Schema({
     isActive:{
         type:Boolean,
         default:true
-    }
+    },
+    timeStamp
      
 });
 

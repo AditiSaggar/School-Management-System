@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { nanoid } =require ('nanoid');
+const timeStamp = require('../utlis/moment')
 
 const sectionSchema =  new mongoose.Schema({
     _id:{
@@ -18,7 +19,8 @@ const sectionSchema =  new mongoose.Schema({
     slug:{
         type:String,
         slug:'name'
-    }
+    },
+    timeStamp
 });
 
 const section = mongoose.model("sectionModel", sectionSchema);

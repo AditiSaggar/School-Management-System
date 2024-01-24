@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const express =require('express');
 const dotenv = require ('dotenv');
 const schoolRoute = require('./src/routes')
+// const moment = require('moment');
+
+// console.log(moment());
 
 require('dotenv').config();
 

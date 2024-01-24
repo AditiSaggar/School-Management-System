@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { nanoid } =require ('nanoid');
+const timeStamp = require('../utlis/moment')
 
 const studentSchema =  new mongoose.Schema({
     _id:{
@@ -43,11 +44,7 @@ const studentSchema =  new mongoose.Schema({
         ref: 'sectionModel',
         required: true,
     }, 
-    // subId:{
-    //     type:String,
-    //     ref: 'subjectModel',
-    //     required: true,
-    // },
+    timeStamp
 
 });
 

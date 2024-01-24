@@ -48,3 +48,20 @@ Response:Section created successfully
 Url:http://localhost:3000/school/newstudent
 Response:Student created successfully
 
+B)Method used: Put
+1)Update School
+Url:http://localhost:3000/school/update/:id
+Response:School updated successfully
+
+2)Update Class
+Url:http://localhost:3000/school/updateCls/:id
+Response:Class updated successfully
+
+3)Update Section
+Url:http://localhost:3000/school/updateSect/:id
+Response:Section updated successfully
+
+4)Update Student
+Url:http://localhost:3000/school/updateStu/:id
+Response:Student updated successfully
+
