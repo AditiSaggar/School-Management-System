@@ -55,11 +55,11 @@ const createStudent = async (req, res) => {
         message: error.message,
       });
     }
-  };
+};
+ 
   
+
 //Update Student
-
-
 const updateStudent = async (req, res) => {
   const { id } = req.params;
 
@@ -82,11 +82,37 @@ const updateStudent = async (req, res) => {
   }
 };
 
-
-
+//get All Student
+const getAllStudents = async (req, res) =>{
+  try {
+      const students = await classModel.find();
+      if(!students){
+          return res.status(404).json({
+              success:false,
+              error:'Student with the provided ID does not exist'
+              
+              
+          })
+      } else{
+          return res.status(200).json({
+              sucess:true,
+              message:'All the Students retrieved successfully',
+              students
+          })
+      }
+      
+  } catch (error) {
+      return res.status(500).json({ 
+          status:false,
+          message: 'Internal Server Error', 
+          error: error.message 
+      });
+  }
+}
 
 
 module.exports={
     createStudent,
-    updateStudent
+    updateStudent,
+    getAllStudents
 }

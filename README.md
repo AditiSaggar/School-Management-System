@@ -65,3 +65,21 @@ Response:Section updated successfully
 Url:http://localhost:3000/school/updateStu/:id
 Response:Student updated successfully
 
+
+C)Get All Data from School,Class,Section,and Student,
+Method Used:GET
+1)Update School
+Url:http://localhost:3000/school/getallschool
+Response:"School retrieved successfully"
+
+2)Update Class
+Url:http://localhost:3000/school/getallclasses
+Response:Classes retrieved successfully
+
+3)Update Section
+Url:http://localhost:3000/school/getallsections
+Response:Section retrieved successfully
+
+4)Update Student
+Url:http://localhost:3000/school/getallstudents
+Response:All the Students retrieved successfully

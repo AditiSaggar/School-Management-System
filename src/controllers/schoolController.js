@@ -1,9 +1,12 @@
 const schoolModel = require('../models/schoolModel')
+const classModel = require('../models/classModel')
+const sectionModel= require('../models/sectionModel')
+const studentModel = require('../models/studentModel')
 const { valSchool } = require('../validations/schoolValidation')
 const {valLoginSchool} = require('../validations/schoolValidation')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-//const schoolService = require('../services/index')
+
 
 // Create School
 const createSchool = async(req,res) =>{
@@ -27,6 +30,7 @@ const createSchool = async(req,res) =>{
 
         // const salt = 10;
         const hashedPassword = await bcrypt.hash(req.body.password,10);
+
     // Create new School
         const newSchool = new schoolModel({          
             name: req.body.name,
@@ -68,7 +72,6 @@ const createSchool = async(req,res) =>{
     }
 }
 
-
 //Login School
 const loginSchool = async (req, res) => {
     
@@ -106,7 +109,6 @@ const loginSchool = async (req, res) => {
                     status: false,
                     error: "School not found"
                 });
-
         } 
     } catch (error) {
         return res.status(500).json({
@@ -128,7 +130,7 @@ const updateSchool= async (req, res) => {
       return res.status(404).json({
         status:false, 
         message: 'School not found' });
-    }else{
+    }else{ 
         return res.status(200).json({
             updatedSchool
         });
@@ -144,10 +146,182 @@ const updateSchool= async (req, res) => {
 };
 
 
+// const getdata = async (req, res) => {
+//     try {
+//         const schoolId = req.params.id
+//     console.log(schoolId)
+
+//     const isSchool = await schoolModel.findById(schoolId)
+//         if(!isSchool){
+//              return res.status(404).json({
+//                  status:false,
+//                  message:"School not found"
+//             })
+        
+//         } 
+        
+//     const classes = await classModel.find({'schoolId':schoolId})
+//     const schoolData ={
+//         schoolId,
+//         classes:[]
+//     };
+
+//     } catch (error) {
+//         return res.status(500).json({ 
+//             status:false,
+//             message: 'Internal Server Error', 
+//             error: error.message 
+//         });
+//     }
+// }
+
+const getAllData = async (req, res) => {
+    try {
+        const schoolId = req.params.id
+    console.log(schoolId)
+
+    const isSchool = await schoolModel.findById(schoolId)
+        if(!isSchool){
+             return res.status(404).json({
+                 status:false,
+                 message:"School not found"
+            })
+        
+        } 
+        const data= await schoolModel.aggregate([ 
+                {
+                  '$match': {
+                    '_id': schoolId
+                  }
+                },        
+            {
+                    $lookup:{
+                        from:"classmodels",
+                        localField:"_id",
+                        foreignField:"schoolId",
+                        as:"ClassDetails"
+                    }
+                },
+                {
+                    $unwind:{
+                        path:'$ClassDetails',
+                        preserveNullAndEmptyArrays:true
+    
+                    }
+                },
+                {
+                    $lookup:{
+                        from:"sectionmodels",
+                        localField:"_id",
+                        foreignField:"classId",
+                        as:"ClassDetails.SectionDetails"
+                    }
+                },
+                {
+                    $unwind:{ 
+                        path:'$ClassDetails.SectionDetails',
+                        preserveNullAndEmptyArrays:true
+                    }
+                },
+                {
+                    $lookup:{
+                        from:"studentmodels",
+                        localField:"_id",
+                        foreignField:"secId",
+                        as:"ClassDetails.SectionDetails.StudentDetails"
+                    }
+                },
+                // {
+                //     $group:{
+                //         _id:'$_id',
+                //         school:{$first:'$$ROOT'},
+                //         classes:{push:'$ClassDetails'},
+                //         sections:{push:'$ClassDetails.SectionDetails'},
+                //         students:{push:'$ClassDetails.SectionDetails.StudentDetails'}
+                //     } 
+                // },
+                // {
+                //     $project:{
+                //         classmodels:{
+                //             _id:'$schooId',
+                //             classes:'$ClassDetails',
+                //             sections:'$SectionDetails',
+                //             students:'$StudentDetails'
+                //         },
+                //         sectionmodels:{
+                //             _id:'$sectionId',
+                //             classes:'$ClassDetails',
+                //             sections:'$SectionDetails',
+                //             students:'$StudentDetails'
+                //         },
+                //         studentmodels:{
+                //             _id:'$studentId',
+                //                 classes:'$ClassDetails',
+                //                 sections:'$SectionDetails',
+                //                 students:'$StudentDetails'
+                //             },
+                //     },
+                // }
+                //{
+//     $project:{
+//         _id:1,
+//         school:1,
+//         classes:1,
+//         sections:1,
+//         students:1
+//     }
+// }
+
+        ]);
+        return res.status(200).json({
+            status:true,
+            messsage:'School Details',
+            data,
+        });
+
+    } catch (error) {
+        return res.status(500).json({ 
+            success:false,
+            message: 'Internal Server Error', 
+            error: error.message 
+        });
+    }
+}
+
+//Reterive all school
+const getAllSchool = async (req, res) =>{
+    try {
+        const schools = await schoolModel.find();
+        if(!schools){
+            return res.status(404).json({
+                success:false,
+                error:'School with the provided ID does not exist'
+                
+                
+            })
+        } else{
+            return res.status(200).json({
+                sucess:true,
+                message:'School retrieved successfully',
+                schools
+            })
+        }
+        
+    } catch (error) {
+        return res.status(500).json({ 
+            status:false,
+            message: 'Internal Server Error', 
+            error: error.message 
+        });
+    }
+}
+
 
 
 module.exports= {
     createSchool,
     loginSchool,
-    updateSchool
+    updateSchool,
+    getAllData,
+    getAllSchool
 }

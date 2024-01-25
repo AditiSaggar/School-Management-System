@@ -94,9 +94,36 @@ const updateSection= async (req, res) => {
     }
   };
   
-
+//Get All Sections
+const getAllSections = async (req, res) =>{
+  try {
+      const section = await sectionModel.find();
+      if(!section){
+          return res.status(404).json({
+              success:false,
+              error:'Section with the provided ID does not exist'
+              
+              
+          })
+      } else{
+          return res.status(200).json({
+              sucess:true,
+              message:'Section retrieved successfully',
+              section
+          })
+      }
+      
+  } catch (error) {
+      return res.status(500).json({ 
+          status:false,
+          message: 'Internal Server Error', 
+          error: error.message 
+      });
+  }
+}
  
 module.exports = {
     createSection,
-    updateSection
+    updateSection,
+    getAllSections
 }

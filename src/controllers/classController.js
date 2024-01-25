@@ -24,8 +24,7 @@ const createClass = async (req, res) => {
         const { name, schoolId } = req.body;
 
         const isSchool = await schoolModel.findOne({ '_id': schoolId });
-          
-
+        
         //Create slug
         const slug = slugify(name, {
             replacement:'-',
@@ -105,11 +104,41 @@ const updateClass= async (req, res) => {
     }
   };
 
-
+//Get All Classes
+const getAllClasses = async (req, res) =>{
+    try {
+        const classes = await classModel.find();
+        if(!classes){
+            return res.status(404).json({
+                success:false,
+                error:'Class with the provided ID does not exist'
+                
+                
+            })
+        } else{
+            return res.status(200).json({
+                sucess:true,
+                message:'Classes retrieved successfully',
+                classes
+            })
+        }
+        
+    } catch (error) {
+        return res.status(500).json({ 
+            status:false,
+            message: 'Internal Server Error', 
+            error: error.message 
+        });
+    }
+}
    
 
 
 module.exports={
     createClass,
-    updateClass
+    updateClass,
+    getAllClasses
 }
+
+
+
