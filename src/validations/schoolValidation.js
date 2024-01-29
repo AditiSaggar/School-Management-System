@@ -43,10 +43,25 @@ const valStudent = Joi.object({
 
 })
 
+//Teacher
+const valTeacher = Joi.object({
+  firstName: Joi.string().min(3).max(30).required(),
+  lastName: Joi.string(),
+  email: Joi.string().email().lowercase().required().description("email should be unique"),
+  dateOfBirth:Joi.date().raw().required(),
+  contact:Joi.number().integer().min(100000000).max(9999999999).required(),
+  gender:Joi.string().required(),
+  address:Joi.string().required(),
+  schoolId:Joi.string().required(),
+
+})
+
+
 module.exports = {
     valSchool,
     valLoginSchool,
     valclass,
     valSection,
-    valStudent
+    valStudent,
+    valTeacher
 }

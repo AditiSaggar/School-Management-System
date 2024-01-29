@@ -12,11 +12,11 @@ const teachSubModel =  new mongoose.Schema({
         required: true, 
     },
     subjectId: { 
-            type:String,
-            ref: 'subjectModels',
-            required: true,
-            unique:true
-        },
+        type:String,
+        ref: 'subjectModels',
+        required: true,
+        unique:true
+    },
 })
 
 

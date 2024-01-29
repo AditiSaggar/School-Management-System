@@ -10,11 +10,15 @@ const subjectSchema =  new mongoose.Schema({
         type: String,
         required: true
     },
-    schoolId: {
+    subjectCode:{
         type: String,
-        ref: 'schoolModel',
-        required: true,
+        required: true
     },
+    // schoolId: {
+    //     type: String,
+    //     ref: 'schoolModel',
+    //     required: true,
+    // },
     slug:{
         type:String,
         slug:'name'

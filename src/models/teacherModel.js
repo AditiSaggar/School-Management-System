@@ -8,21 +8,32 @@ const teacherSchema =  new mongoose.Schema({
     },
     firstName: {
         type:String,
-        required: true
+        // required: true
     },
     lastName: {
         type:String,
-        required: true
+        // required: true
     },
     email: {
         type:String,
         required: true,
         unique:true
     },
+    dateOfBirth: {
+        type: Date,
+        required: true,
+    },
     contact: {
         type: Number,
         required: true,
         unique:true
+    },
+    gender:{
+        type: Boolean
+    },
+    address:{
+        type:String,
+        required: true,
     },
     schoolId: {
         type: String,

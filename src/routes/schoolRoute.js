@@ -45,5 +45,16 @@ router.get('/getallsections',controllers.sectionController.getAllSections)
 //Get All Student
 router.get('/getallstudents',controllers.studentController.getAllStudents)
 
+//Create Teacher
+router.post('/newteacher',controllers.teacherController.createTeacher)
+
+//Create Subject
+router.post('/newsubject', controllers.subjectController.createSubject)
+
+//Create linking b/w teacher an subject
+router.post('/createlinking',controllers.teacherController.techSubLinking)
+
+
+
 module.exports = router;
 

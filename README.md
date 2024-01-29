@@ -48,6 +48,18 @@ Response:Section created successfully
 Url:http://localhost:3000/school/newstudent
 Response:Student created successfully
 
+6)Create Teacher
+Url:http://localhost:3000/school/newteacher
+Response:Teacher created successfully
+
+7)Create Subject
+Url:http://localhost:3000/school/newsubject
+Response:Subject created successfully
+
+8)Linking Subject and Teacher
+Url:http://localhost:3000/school/createlinking
+Response:Subject linked to teacher successfully
+
 B)Method used: Put
 1)Update School
 Url:http://localhost:3000/school/update/:id
@@ -83,3 +95,4 @@ Response:Section retrieved successfully
 4)Update Student
 Url:http://localhost:3000/school/getallstudents
 Response:All the Students retrieved successfully
+

@@ -19,10 +19,9 @@ const createClass = async (req, res) => {
     //     });
     // }
 
-    
     try {
         const { name, schoolId } = req.body;
-
+        //Check that School is existed 
         const isSchool = await schoolModel.findOne({ '_id': schoolId });
         
         //Create slug
