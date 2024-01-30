@@ -21,7 +21,6 @@ const createSubject = async (req,res)=>{
     }
 
     //Create Subject
-    
         const newSubject = await subjectModels.findOne( { name, subjectCode })
         if(!newSubject){
             const newSubject = new subjectModels({

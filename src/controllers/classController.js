@@ -1,5 +1,6 @@
 const classModel = require('../models/classModel')
 const schoolModel = require('../models/schoolModel')
+const studentModel = require('../models/studentModel')
 // const valclass = require('../validations/schoolValidation')
 const slugify = require('slugify');
 
@@ -130,13 +131,92 @@ const getAllClasses = async (req, res) =>{
         });
     }
 }
-   
+
+
+//Get All Classes of School
+const getClassesBySchoolId = async (req, res) => {
+    try {
+      const schoolId = req.params.id;
+  
+      // Find post by ID
+      const  school = await schoolModel.findById(schoolId);
+  
+      if (school) {
+        const allClasses = await classModel.aggregate([
+          {
+            '$count': 'string'
+          }  
+      ])
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Classes retrieved successfully',
+        allClasses
+        });
+        
+      }else{
+      return res.status(404).json({ 
+        success: false, 
+        message: 'School not found', 
+        error: 'School with the provided ID does not exist' });
+      } 
+  
+    } catch (error) {
+      console.error('Error getting post by ID:', error);
+      res.status(500).json({
+         success: false, 
+         message: 'Internal Server Error', 
+         error: error.message 
+        });
+    }
+  };
+
+
+
+//get Count of Students when classId is passed in the param
+const getStudentByClassId = async (req, res) => {
+    try {
+      const classId = req.params.id;
+  
+      // Find class by ID
+      const  classes = await classModel.findById(classId);
+  
+      if(classes) {
+        const allStudents = await studentModel.aggregate([
+          {
+            '$count': 'string'
+          }
+      ])
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Stduents retrieved successfully',
+        allStudents
+        }); 
+        
+      }else{
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Class not found', 
+        error: 'Class with the provided ID does not exist' });
+      } 
+  
+    } catch (error) {
+      console.error('Error getting post by ID:', error);
+      res.status(500).json({
+         success: false, 
+         message: 'Internal Server Error', 
+         error: error.message 
+        });
+    }
+  };
+
 
 
 module.exports={
     createClass,
     updateClass,
-    getAllClasses
+    getAllClasses,
+    getClassesBySchoolId,
+    getStudentByClassId
 }
 
 

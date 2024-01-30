@@ -1,4 +1,4 @@
-Project Title : new_crud
+Project Title :School Management System
 Description : This project is for to create the School Management System
 project gitlink:https://github.com/AditiSaggar/School-Management-System
 
@@ -8,7 +8,7 @@ How to start :
  After that file is created of name package.json.
 In this file you can see the main file of your project.
 
-To install the package npm install <package name>
+To install the package npm install <packagename>
 Package Installed :
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
@@ -20,7 +20,7 @@ Package Installed :
     "nodemon": "^3.0.3"
 
 
-    How to run the project: npm start
+ How to run the project: npm start
 To refresh the project :npx nodemon
 
 Testing in the Postman:
@@ -60,7 +60,11 @@ Response:Subject created successfully
 Url:http://localhost:3000/school/createlinking
 Response:Subject linked to teacher successfully
 
-B)Method used: Put
+9)Linking Teacher,Subject and Class
+Url:http://localhost:3000/school/createlinks
+Response:Teacher,Subject an Class are linked successfully
+
+B)Method used: PUT
 1)Update School
 Url:http://localhost:3000/school/update/:id
 Response:School updated successfully
@@ -96,3 +100,14 @@ Response:Section retrieved successfully
 Url:http://localhost:3000/school/getallstudents
 Response:All the Students retrieved successfully
 
+D)Get API 
+Method Used:GET
+1)To get the Count of student in the particular school when passed the school id in the param
+Url:http://localhost:3000/school/getstudents/:id
+Response:Student retrieved successfully
+
+2)To get the Count of class in the particular school when passed the school id in the param
+Url:http://localhost:3000/school/getstudents/:id
+Response:Classes retrieved successfully also also it will give the count of the total classes in the school
+
+3)

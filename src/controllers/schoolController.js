@@ -145,36 +145,7 @@ const updateSchool= async (req, res) => {
   }
 };
 
-
-// const getdata = async (req, res) => {
-//     try {
-//         const schoolId = req.params.id
-//     console.log(schoolId)
-
-//     const isSchool = await schoolModel.findById(schoolId)
-//         if(!isSchool){
-//              return res.status(404).json({
-//                  status:false,
-//                  message:"School not found"
-//             })
-        
-//         } 
-        
-//     const classes = await classModel.find({'schoolId':schoolId})
-//     const schoolData ={
-//         schoolId,
-//         classes:[]
-//     };
-
-//     } catch (error) {
-//         return res.status(500).json({ 
-//             status:false,
-//             message: 'Internal Server Error', 
-//             error: error.message 
-//         });
-//     }
-// }
-
+//get All data od school using lookup
 const getAllData = async (req, res) => {
     try {
         const schoolId = req.params.id
@@ -271,7 +242,6 @@ const getAllData = async (req, res) => {
 //         students:1
 //     }
 // }
-
         ]);
         return res.status(200).json({
             status:true,

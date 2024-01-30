@@ -24,9 +24,7 @@ const classSchema =  new mongoose.Schema({
         type:String,
         slug:'name'
     },
-    timeStamp
-
-          
+    timeStamp       
 });
 
 const classSch = mongoose.model("classModel", classSchema);

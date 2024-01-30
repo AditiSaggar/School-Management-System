@@ -54,6 +54,37 @@ router.post('/newsubject', controllers.subjectController.createSubject)
 //Create linking b/w teacher an subject
 router.post('/createlinking',controllers.teacherController.techSubLinking)
 
+//Create linking b/w teacher, subject and Class
+router.post('/createlinks', controllers.teacherController.linkingClsSubTeach)
+
+//Get All the student when SchoolId is passed in the param
+router.get('/getstudents/:id',auth,controllers.studentController.getStudentBySchoolId)
+
+//Get All the classes when SchoolId is passed in the param
+router.get('/getclasses/:id',auth,controllers.classController.getClassesBySchoolId)
+
+//Get All the student when CLassId is passed in the param
+router.get('/getstudentsbyclass/:id',auth,controllers.classController.getStudentByClassId)
+
+
+//Get All the student when SectionId is passed in the param
+router.get('/getstudentsbysection/:id',auth,controllers.sectionController.getStudentBySectionId)
+
+//Get All the subject when teacherId has been passed in the param
+router.get('/getsubjectsbyteacher/:id',auth,controllers.teacherController.getSubjectByTeacherId)
+
+//Get All the Subject in which class no of subject are presnt it is also created with the lookup need to edit
+router.get('/getSubClsByTeachId/:id',auth,controllers.teacherController.getSubofClsByTeachId)
+
+//LOOKUP to get subject by teacherId
+router.get('/getSubjectdata/:id', auth, controllers.teacherController.getSubjectdata)
+
+
+//LOOKUP to get subject and class data as the teacherId passed in the param
+router.get('/getsubclassdata/:id',auth,controllers.teacherController.getSubjectAndClassdata)
+
+
+
 
 
 module.exports = router;

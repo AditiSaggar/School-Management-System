@@ -1,6 +1,7 @@
 const studentModel = require('../models/studentModel')
 const classModel = require('../models/classModel')
 const sectionModel=require('../models/sectionModel')
+const schoolModel = require('../models/schoolModel')
 const { valStudent} = require ('../validations/schoolValidation')
 
 
@@ -110,9 +111,50 @@ const getAllStudents = async (req, res) =>{
   }
 }
 
+//Get the total no of Student of a particular school
+const getStudentBySchoolId = async (req, res) => {
+  try {
+    const schoolId = req.params.id;
+
+    // Find post by ID
+    const  school = await schoolModel.findById(schoolId);
+
+    if (school) {
+      const allStudents = await studentModel.aggregate([
+        {
+          '$count': 'string'
+        }
+      
+    ])
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Student retrieved successfully',
+      allStudents
+      });
+      
+    }else{
+    return res.status(404).json({ 
+      success: false, 
+      message: 'school not found', 
+      error: 'School with the provided ID does not exist' });
+
+    } 
+
+  } catch (error) {
+    console.error('Error getting post by ID:', error);
+    res.status(500).json({
+       success: false, 
+       message: 'Internal Server Error', 
+       error: error.message 
+      });
+  }
+};
+
+
 
 module.exports={
     createStudent,
     updateStudent,
-    getAllStudents
+    getAllStudents,
+    getStudentBySchoolId
 }

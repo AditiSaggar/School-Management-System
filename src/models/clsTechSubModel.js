@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { nanoid } =require ('nanoid');
 const timeStamp = require('../utlis/moment')
 
-const teachSubModel =  new mongoose.Schema({
+const clsTeachSubModel =  new mongoose.Schema({
     _id:{
         type:String,
         default: () => nanoid(),
@@ -18,10 +18,17 @@ const teachSubModel =  new mongoose.Schema({
         required: true,
         unique:true
     },
+    classId:{
+        type:String,
+        ref:'classModels',
+        required:true,
+        unique:true,
+    },
     timeStamp
 })
 
 
 
-const techSub = mongoose.model("teachSubModel", teachSubModel);
-module.exports = techSub;
+
+const clsTeachSublink = mongoose.model("clsTeachSubModel", clsTeachSubModel);
+module.exports = clsTeachSublink;

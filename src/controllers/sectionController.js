@@ -1,5 +1,6 @@
 const sectionModel = require('../models/sectionModel')
 const classModel = require('../models/classModel')
+const studentModel=require('../models/studentModel')
 //const { valSection} = require ('../validations/schoolValidation')
 const slugify = require('slugify');
 
@@ -122,8 +123,50 @@ const getAllSections = async (req, res) =>{
   }
 }
  
+
+//get Students per section
+const getStudentBySectionId = async (req, res) => {
+    try {
+      const sectionId = req.params.id;
+  
+      // Find section by ID
+      const  section = await sectionModel.findById(sectionId );
+  
+      if(section) {
+        const allStudents = await studentModel.aggregate([
+          {
+            '$count': 'string'
+          }
+      ])
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Stduents retrieved successfully',
+        allStudents
+        }); 
+        
+      }else{
+      return res.status(404).json({ 
+        success: false, 
+        message: 'section not found', 
+        error: 'section with the provided ID does not exist' });
+      } 
+  
+    } catch (error) {
+      console.error('Error getting post by ID:', error);
+      res.status(500).json({
+         success: false, 
+         message: 'Internal Server Error', 
+         error: error.message 
+        });
+    }
+  };
+
+
+
+
 module.exports = {
     createSection,
     updateSection,
-    getAllSections
+    getAllSections,
+    getStudentBySectionId 
 }
