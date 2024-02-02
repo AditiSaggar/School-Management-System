@@ -135,9 +135,10 @@ const getStudentBySectionId = async (req, res) => {
       if(section) {
         const allStudents = await studentModel.aggregate([
           {
-            '$count': 'string'
+            '$count': 'count'
           }
       ])
+
       return res.status(200).json({ 
         success: true, 
         message: 'Stduents retrieved successfully',
@@ -152,7 +153,7 @@ const getStudentBySectionId = async (req, res) => {
       } 
   
     } catch (error) {
-      console.error('Error getting post by ID:', error);
+      console.error('Error getting section by ID:', error);
       res.status(500).json({
          success: false, 
          message: 'Internal Server Error', 

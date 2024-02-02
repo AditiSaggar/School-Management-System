@@ -1,6 +1,5 @@
 const Joi = require('joi');
 
-
 const valSchool = Joi.object({
   name: Joi.string().min(3).max(30).required().messages({ 'any.required': 'Name is a required', }),
   address: Joi.string().max(30).required(),
@@ -56,6 +55,12 @@ const valTeacher = Joi.object({
 
 })
 
+//Library
+const valLibrary = Joi.object({
+  email: Joi.string().email().lowercase().required().description("email should be unique"),
+  contact:Joi.number().integer().min(100000000).max(9999999999).required(),
+  schoolId:Joi.string().required(),
+})
 
 module.exports = {
     valSchool,
@@ -63,5 +68,6 @@ module.exports = {
     valclass,
     valSection,
     valStudent,
-    valTeacher
+    valTeacher,
+    valLibrary
 }

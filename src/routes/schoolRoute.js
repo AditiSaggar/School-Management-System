@@ -84,6 +84,29 @@ router.get('/getSubjectdata/:id', auth, controllers.teacherController.getSubject
 router.get('/getsubclassdata/:id',auth,controllers.teacherController.getSubjectAndClassdata)
 
 
+//Create Library
+router.post('/newlibrary', controllers.libraryController.createLibrary)
+
+//CreateCategory
+router.post('/newcategory', controllers.categoryController.createCategory)
+
+//Create Book
+router.post('/newbook',controllers.bookController.createBook)
+
+//Create BookIssueReturn
+router.post('/issuereturnbook',controllers.bookIssueReturnController.createBookIssueReturn)
+
+//Get library by schoolId
+router.get('/getlibrary/:id',controllers.libraryController.getLibraryBySchoolId)
+
+//Get Category by bookId
+router.get('/getbooks/:id',controllers.bookController.getBookByCategoryId)
+
+//Get book details by book id
+router.get('/getbookdetail/:id',controllers.bookController.getBookBybookId)
+
+//Get books by libraryId
+router.get('/getbookoflibrary/:id',controllers.bookController.getBookBylibraryId)
 
 
 

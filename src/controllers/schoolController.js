@@ -119,7 +119,6 @@ const loginSchool = async (req, res) => {
 };
 
 //Update School
-
 const updateSchool= async (req, res) => {
   const { id } = req.params;
 
@@ -145,7 +144,7 @@ const updateSchool= async (req, res) => {
   }
 };
 
-//get All data od school using lookup
+//get All data of school using lookup
 const getAllData = async (req, res) => {
     try {
         const schoolId = req.params.id

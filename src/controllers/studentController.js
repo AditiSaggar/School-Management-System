@@ -31,7 +31,8 @@ const createStudent = async (req, res) => {
         });
       }
       const newStudent = new studentModel({
-        name,email,password,address,contact,gender,classId,secId,
+        ///name,email,password,address,contact,gender,classId,secId,
+        ...req.body
       });
   
       const savedStudent = await newStudent.save();

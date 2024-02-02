@@ -295,7 +295,7 @@ const getSubjectAndClassdata = async (req,res)=>{
           })
     }   
       if(teacherId)  {   
-      const data  =await clsTeachSublink.aggregate([      
+      const data  = await clsTeachSublink.aggregate([      
           {
               '$match':{
              'teacherId' : teacherId

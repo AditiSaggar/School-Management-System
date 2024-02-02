@@ -73,41 +73,59 @@ Response:School updated successfully
 Url:http://localhost:3000/school/updateCls/:id
 Response:Class updated successfully
 
-3)Update Section
+3) Update Section
 Url:http://localhost:3000/school/updateSect/:id
 Response:Section updated successfully
 
-4)Update Student
+4) Update Student
 Url:http://localhost:3000/school/updateStu/:id
 Response:Student updated successfully
 
 
-C)Get All Data from School,Class,Section,and Student,
+C) Get All Data from School,Class,Section,and Student,
 Method Used:GET
-1)Update School
+1) Update School
 Url:http://localhost:3000/school/getallschool
 Response:"School retrieved successfully"
 
-2)Update Class
+2) Update Class
 Url:http://localhost:3000/school/getallclasses
 Response:Classes retrieved successfully
 
-3)Update Section
+3) Update Section
 Url:http://localhost:3000/school/getallsections
 Response:Section retrieved successfully
 
-4)Update Student
+4) Update Student
 Url:http://localhost:3000/school/getallstudents
 Response:All the Students retrieved successfully
 
-D)Get API 
+D) Get API 
 Method Used:GET
-1)To get the Count of student in the particular school when passed the school id in the param
-Url:http://localhost:3000/school/getstudents/:id
+1) To get the Count of student in the particular school when passed the school id in the param
+Url:http://localhost:3000/school/getstudents/:schoolId
 Response:Student retrieved successfully
 
 2)To get the Count of class in the particular school when passed the school id in the param
-Url:http://localhost:3000/school/getstudents/:id
-Response:Classes retrieved successfully also also it will give the count of the total classes in the school
+Url:http://localhost:3000/school/getstudents/:schoolId
+Response:Classes retrieved successfully, also it will give the count of the total classes in the school
 
-3)
+3) To get the Count of student in the particular class when passed the class id in the param
+Url:http://localhost:3000/school/getstudentsbyclass/:classId
+Response:Student retrieved successfully, also it will give the count of the total students in the class
+
+4) Get the Students when the sectionId has been passed in the param
+Url:http://localhost:3000/school/getstudentsbysection/:sectionId
+Response:Student retrieved successfully, also it will give the count of the total students in the paticular section
+
+5) Get all the subject as the teacherId passed in the param using lookup
+Url:http://localhost:3000/school/getSubjectdata/:teacherId
+Response:Subject Detail, It will give the  list of number of subject as teacherId passed in the param
+
+6)Get the Class with the subject as the teacherId passed in the param using lookup
+Url:http://localhost:3000/school/getsubclassdata/:teacherId
+Response:Details, It will give the  list of number of subject in the class as teacherId is passed in the param.
+
+E) Library Management System
+1) Create Library
+Url:
