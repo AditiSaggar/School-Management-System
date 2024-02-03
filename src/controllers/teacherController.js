@@ -416,11 +416,11 @@ const updateTeacher = async (req, res) => {
       }
       if(email){
           const teacherEmail = await models.teacherModel.findOne({'email': email, '_id':{$ne:teacherId }});
-              if(teacherEmail){
-                  return res.status(404).json({
+            if(teacherEmail){
+                return res.status(404).json({
                   success:false,   
                   message: 'Another teacher is existed with same email'
-              });
+            });
           }
       }
       //Update the Details of library

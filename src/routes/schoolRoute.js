@@ -121,7 +121,8 @@ router.put('/updatelibrary/:id',controllers.libraryController.updatedLibrary)
 //Update Teacher
 router.put('/updateteacher/:id', controllers.teacherController.updateTeacher)
 
-
+//Update Class Detail
+router.put('/updateclassdetail/:id',controllers.classController.updateClassDetail)
 
 
 module.exports = router;

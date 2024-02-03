@@ -56,22 +56,30 @@ const createSubject = async (req,res)=>{
 const updateSubject= async (req, res) => {
     try {
         const subjectId = req.params.id;
+        const {name, subjectCode,slug} = req.body
       const subject = await models.subjectModel.findById({'_id':subjectId})
-      
-      if(subject){
-        const checkSubject = await models.subjectModel.find({'slug': slug});
-        return res.status(200).json({
-            success:true,
-            message:'Subject updated successffully', 
+      if(!subject){
+        return res.status(404).json({
+            success: false, 
+            message: 'Subject not updated' 
+      })
+    }
+      if(slug){
+        const checkSubject = await models.subjectModel.findOne({'slug': slug, '_id':{$ne:subjectId } });
+        return res.status(404).json({
+            success:false,
+            message:'Slug already is in use', 
             checkSubject
           });
-      }else{
-        return res.status(404).json({
-          success: false, 
-          message: 'Subject not updated' 
-        });
       }
-    
+      //Update the Details of Subject
+      const updatedSubject =  await models.subjectModel.findByIdAndUpdate( subjectId,req.body,{ new: true })
+      return res.status(200).json({
+          success:true,
+          messae:"Subject is updated successfully",
+          updatedSubject
+      });
+
     } catch (error) {
       return res.status(500).json({ 
           status:false,

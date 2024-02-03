@@ -1,6 +1,7 @@
 const classModel = require('../models/classModel')
 const schoolModel = require('../models/schoolModel')
 const studentModel = require('../models/studentModel')
+const models = require('../models/index')
 // const valclass = require('../validations/schoolValidation')
 const slugify = require('slugify');
 
@@ -209,14 +210,51 @@ const getStudentByClassId = async (req, res) => {
     }
   };
 
+//Update class
+const updateClassDetail = async (req, res) => {
+  try {
+      const classId = req.params.id;
+      const {name, schoolId,isActive,slug} = req.body
 
+    const existingclass = await models.classModel.findById({'_id':classId})
+    if(!existingclass){
+      return res.status(404).json({
+          success: false, 
+          message: 'Class with provided Id does not found' 
+    })
+  }
+    if(slug){
+      const checkClass = await classModel.findOne({'slug': slug, '_id':{$ne:classId}});
+      return res.status(404).json({
+          success:false,
+          message:'Slug already is in use', 
+          checkClass
+        });
+    }
+    //Update the Details of Class
+    const updatedClass =  await models.classModel.findByIdAndUpdate( classId,req.body,{ new: true })
+    return res.status(200).json({
+        success:true,
+        messae:"Class is updated successfully",
+        updatedClass
+    });
+
+  } catch (error) {
+    return res.status(500).json({ 
+        status:false,
+        message: 'Internal Server Error', 
+        error: error.message 
+    });
+  }
+}; 
 
 module.exports={
     createClass,
     updateClass,
     getAllClasses,
     getClassesBySchoolId,
-    getStudentByClassId
+    getStudentByClassId,
+    updateClassDetail
 }
 
 
