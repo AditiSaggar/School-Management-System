@@ -1,4 +1,5 @@
-const subjectModels = require('../models/subjectModel')
+//const subjectModels = require('../models/subjectModel')
+const models = require('../models/index')
 const slugify = require('slugify')
 
 
@@ -12,7 +13,7 @@ const createSubject = async (req,res)=>{
             lower: true
         });
 
-    const isSlug = await subjectModels.findOne({'slug': slug});
+    const isSlug = await models.subjectModel.findOne({'slug': slug});
     if (isSlug){
       return res.status(400).json({
         success:false,
@@ -20,8 +21,8 @@ const createSubject = async (req,res)=>{
         })
     }
 
-    //Create Subject
-        const newSubject = await subjectModels.findOne( { name, subjectCode })
+    //Create new Subject
+        const newSubject = await models.subjectModel.findOne( { name, subjectCode })
         if(!newSubject){
             const newSubject = new subjectModels({
             name,
@@ -51,6 +52,39 @@ const createSubject = async (req,res)=>{
 }
 
 
+//Update Subject
+const updateSubject= async (req, res) => {
+    try {
+        const subjectId = req.params.id;
+      const subject = await models.subjectModel.findById({'_id':subjectId})
+      
+      if(subject){
+        const checkSubject = await models.subjectModel.find({'slug': slug});
+        return res.status(200).json({
+            success:true,
+            message:'Subject updated successffully', 
+            checkSubject
+          });
+      }else{
+        return res.status(404).json({
+          success: false, 
+          message: 'Subject not updated' 
+        });
+      }
+    
+    } catch (error) {
+      return res.status(500).json({ 
+          status:false,
+          message: 'Internal Server Error', 
+          error: error.message 
+      });
+    }
+  };
+
+
+
+
 module.exports={
-    createSubject
+    createSubject,
+    updateSubject
 }

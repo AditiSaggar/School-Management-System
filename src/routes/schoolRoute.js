@@ -108,6 +108,20 @@ router.get('/getbookdetail/:id',controllers.bookController.getBookBybookId)
 //Get books by libraryId
 router.get('/getbookoflibrary/:id',controllers.bookController.getBookBylibraryId)
 
+//UPDATE API
+//Update School
+router.put('/updatedschool/:id',controllers.schoolController.updatedSchool)
+
+//update subject
+router.put('/updatesubject/:id',controllers.subjectController.updateSubject)
+
+//Update Library
+router.put('/updatelibrary/:id',controllers.libraryController.updatedLibrary)
+
+//Update Teacher
+router.put('/updateteacher/:id', controllers.teacherController.updateTeacher)
+
+
 
 
 module.exports = router;

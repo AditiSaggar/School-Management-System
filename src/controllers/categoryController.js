@@ -6,20 +6,22 @@ const createCategory = async(req,res) =>{
     try {
         
         const{categoryName,libraryId} = req.body;
-        const checkLibrary = await models.libraryModel.findOne({'_id':libraryId})
+        const checkLibrary = await models.libraryModel.findById({'_id':libraryId})
         if (!checkLibrary){
         return res.status(400).json({
             success:false,
             error:'Library not existed'
         })
     }
-        const checkCategory = await models.categoryModel.findOne({'categoryName':categoryName})
+        const checkCategory = await models.categoryModel.findOne({$and:[{'categoryName':categoryName},{'libraryId':libraryId}]});
         if (checkCategory){
         return res.status(400).json({
             success:false,
             error:'CategoryName is already existed'
             })
         }
+
+        
     //Crete Category
         const newCategory = new models.categoryModel({          
             ...req.body
@@ -27,6 +29,7 @@ const createCategory = async(req,res) =>{
         });
         //Save Category
         const savedCategory = await newCategory.save()
+
         res.status(200).json({
             sucess: true,
             message: "Category is created successfully",
@@ -41,7 +44,7 @@ const createCategory = async(req,res) =>{
 }
 
 
-
 module.exports = {
-    createCategory
+    createCategory,
+    
 }

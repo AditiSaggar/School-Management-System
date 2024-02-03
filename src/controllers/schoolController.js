@@ -6,6 +6,7 @@ const { valSchool } = require('../validations/schoolValidation')
 const {valLoginSchool} = require('../validations/schoolValidation')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
+const models = require('../models/index')
 
 
 // Create School
@@ -123,7 +124,7 @@ const updateSchool= async (req, res) => {
   const { id } = req.params;
 
   try {
-    const updatedSchool = await schoolModel.findByIdAndUpdate(id, req.body, { new: true });
+    const updatedSchool = await models.schoolModel.findByIdAndUpdate(id, req.body, { new: true });
 
     if (!updatedSchool) {
       return res.status(404).json({
@@ -144,6 +145,47 @@ const updateSchool= async (req, res) => {
   }
 };
 
+
+//Update School with email check
+const updatedSchool= async (req, res) => {
+    try {
+        const schoolId = req.params.id;
+        const {name,address,email,password,contact,image,banner} = req.body;
+
+      const existingSchool = await models.schoolModel.findById({'_id':schoolId});  
+
+      if (!existingSchool){
+        return res.status(404).json({
+            success:false,   
+            message: 'School not found'
+      });
+    }
+        if(email){
+            const schoolEmail = await models.schoolModel.findOne({'email': email, '_id':{$ne:schoolId}});
+            if(schoolEmail){
+                return res.status(404).json({
+                    success:false,   
+                    message: 'Another School is existed with same email'
+              });
+        }
+    }
+        
+        const updateSchool =  await models.schoolModel.findByIdAndUpdate(schoolId,req.body,{ new: true })
+        return res.status(200).json({
+            success:true,
+            messae:"School is updated successfully",
+            updateSchool
+        });
+    } catch (error) {
+      return res.status(500).json({ 
+          status:false,
+          message: 'Internal Server Error', 
+          error: error.message 
+      });
+    }
+};
+
+  
 //get All data of school using lookup
 const getAllData = async (req, res) => {
     try {
@@ -292,5 +334,6 @@ module.exports= {
     loginSchool,
     updateSchool,
     getAllData,
-    getAllSchool
+    getAllSchool,
+    updatedSchool
 }

@@ -103,11 +103,48 @@ const getLibraryBySchoolId = async(req,res)=>{
           }
 }
 
+//Update Library
+const updatedLibrary = async (req, res) => {
+    try {
+        const libraryId = req.params.id;
+        const {email,contact,schoolId} = req.body;
 
+      const existingLibrary = await models.libraryModel.findById({'_id':libraryId});  
+        if(!existingLibrary){
+            return res.status(404).json({
+                success:false,   
+                message: 'Library not found'
+            });
+        }
+        if(email){
+            const libraryEmail = await models.libraryModel.findOne({'email': email, '_id':{$ne:libraryId}});
+                if(libraryEmail){
+                    return res.status(404).json({
+                    success:false,   
+                    message: 'Another library is existed with same email'
+                });
+            }
+        }
+        //Update the Details of library
+        const updatelibrary =  await models.libraryModel.findByIdAndUpdate(libraryId,req.body,{ new: true })
+        return res.status(200).json({
+            success:true,
+            messae:"Library is updated successfully",
+            updatelibrary
+        });
+    } catch (error) {
+      return res.status(500).json({ 
+          success:false,
+          message: 'Internal Server Error', 
+          error: error.message 
+      });
+    }
+};
 
 
 module.exports ={
     createLibrary,
-    getLibraryBySchoolId
+    getLibraryBySchoolId,
+    updatedLibrary
 
 }

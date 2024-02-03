@@ -1,9 +1,10 @@
-const teacherModel = require('../models/teacherModel')
-const subjectModel = require('../models/subjectModel')
-const classModel = require('../models/classModel')
-const teachSubModel = require('../models/teachSubModel')
-const clsTeachSublink = require('../models/clsTechSubModel')
+// const teacherModel = require('../models/teacherModel')
+// const subjectModel = require('../models/subjectModel')
+// const classModel = require('../models/classModel')
+// const teachSubModel = require('../models/teachSubModel')
+// const clsTeachSublink = require('../models/clsTechSubModel')
 const { valTeacher }  = require('../validations/schoolValidation')
+const models = require('../models/index')
 
 
 //Create Teacher
@@ -20,7 +21,7 @@ const createTeacher = async(req,res)=>{
             })
         });
     }
-    const checkTeacher = await teacherModel.findOne({email:req.body.email})
+    const checkTeacher = await models.teacherModel.findOne({email:req.body.email})
     if (checkTeacher){
         return res.status(400).json({
             success:false,
@@ -71,8 +72,8 @@ const createTeacher = async(req,res)=>{
 const techSubLinking = async(req,res)=>{
     try {
         const{teacherId, subjectId} = req.body;
-        const teacher = await teacherModel.findById(teacherId);
-        const subject = await subjectModel.findById(subjectId);
+        const teacher = await models.teacherModel.findById(teacherId);
+        const subject = await models.subjectModel.findById(subjectId);
 
         if (!teacher || !subject) {
             return res.Status(404).json({
@@ -81,7 +82,7 @@ const techSubLinking = async(req,res)=>{
             }) 
         }
         //check is subject already linked to the teacher
-        const exitLink = await teachSubModel.findOne({teacherId, subjectId});
+        const exitLink = await models.teachSubModel.findOne({teacherId, subjectId});
         if (exitLink) {
             return res.status(403).json({
               success: false,
@@ -111,9 +112,9 @@ const techSubLinking = async(req,res)=>{
 const linkingClsSubTeach = async(req,res)=>{
     try {
         const{teacherId, subjectId, classId} = req.body;
-        const teacher = await teacherModel.findById(teacherId);
-        const subject = await subjectModel.findById(subjectId);
-        const classes = await classModel.findById(classId);
+        const teacher = await models.teacherModel.findById(teacherId);
+        const subject = await models.subjectModel.findById(subjectId);
+        const classes = await models.classModel.findById(classId);
 
         if (!teacher || !subject || !classes) {
             return res.Status(404).json({
@@ -122,7 +123,7 @@ const linkingClsSubTeach = async(req,res)=>{
             }) 
         }
         //check is subject already linked to the teacher
-        const exitLink = await clsTeachSublink.findOne({teacherId, subjectId, classId});
+        const exitLink = await models.clsTeachSublink.findOne({teacherId, subjectId, classId});
         if (exitLink) {
             return res.status(403).json({
               success: false,
@@ -157,10 +158,10 @@ const getSubjectByTeacherId = async (req, res) => {
         const teacherId = req.params.id;
     
         // Find teacher by ID
-        const teacher = await teacherModel.findById(teacherId);
+        const teacher = await models.teacherModel.findById(teacherId);
     
         if(teacher) {
-          const allSubjects = await teachSubModel.find({teacherId})
+          const allSubjects = await models.teachSubModel.find({teacherId})
         
         return res.status(200).json({ 
           success: true, 
@@ -191,13 +192,13 @@ const getSubofClsByTeachId = async(req,res)=>{
         const teacherId = req.params.id;
     
         // Find subject by teacherId by ID
-        const teacher = await teacherModel.findById(teacherId);
+        const teacher = await models.teacherModel.findById(teacherId);
 
         if(teacher){
-        const allClasses = await clsTeachSublink.find({teacherId})
-        //const allSubject = await clsTeachSublink.find({teacherId})
+        const allClasses = await models.clsTeachSublink.find({teacherId})
+        //const allSubject = await models.clsTeachSublink.find({teacherId})
 
-        //const allClasses = await classModel.find({teacherId})
+        //const allClasses = await models.classModel.find({teacherId})
         return res.status(200).json({ 
             success: true, 
             message: 'Classes retrieved successfully',
@@ -233,7 +234,7 @@ const getSubjectdata = async (req,res)=>{
           })
     }   
       if(teacherId)  {   
-      const data  =await teachSubModel.aggregate([      
+      const data  =await models.teachSubModel.aggregate([      
           {
               '$match':{
              'teacherId' : teacherId
@@ -295,7 +296,7 @@ const getSubjectAndClassdata = async (req,res)=>{
           })
     }   
       if(teacherId)  {   
-      const data  = await clsTeachSublink.aggregate([      
+      const data  = await models.clsTeachSublink.aggregate([      
           {
               '$match':{
              'teacherId' : teacherId
@@ -332,7 +333,7 @@ const getSubjectAndClassdata = async (req,res)=>{
             }
           } 
       ]);
-      if(data.length > 0){
+    if(data.length > 0){
       return res.status(200).json({
           status:true,
           messsage:'Details',
@@ -345,19 +346,98 @@ const getSubjectAndClassdata = async (req,res)=>{
       
     });
   }
-    }
-  
-      }catch (error) {
+  }
+}catch (error) {
           console.log("error:",error);     
           return res.status(500).json({ 
-              status:false,
+              success:false,
               message: 'Internal Server Error' 
           });
     }
 };
 
+//Update Teacher
+// const updateTeacher = async(req,res)=>{
+//   try {
+//     const teacherId = req.params.id;
+//     const {firstName, lastName, email, dateOfBirth, contact, gender,address,schoolId } = req.body;
 
+//     const existingTeacher = await models.teacherModel.findById({'id':teacherId})
+//       if(!existingTeacher){
+//         return res.status(404).json({
+//         success:false,
+//         error:'Teacher with the provided id doesnot existed'
+//       })
+//     }
+//   if(email){
+//     const teacherEmail = await models.teacherModel.findOne({'email':email, '_id':{$ne:teacherId}});
+//         if(teacherEmail){
+//           return res.status(404).json({
+//           success:false,
+//           error:'Another teacher with the email address is already existed'
+//         })
+//       }
+//     }
 
+//   //Update teacher
+//   const updatedTeacher = await models.teacherModel.findByIdAndUpdate(teacherId, req.body, { new:true} )
+//     if(updatedTeacher){
+//       return res.status(200).json({
+//         success:true,
+//         message:'Teacher detail is updated successfully',
+//         updatedTeacher
+//       })
+//     }else{
+//       return res.status(400).json({
+//         success:false,
+//         error:"Teacher not updated"
+//       })
+//     }
+// } catch (error) {
+//     return res.status(500).json({
+//       success:false,
+//       message: 'Internal Server Error', 
+//       error: error.message 
+//     })
+//   }
+// }
+
+const updateTeacher = async (req, res) => {
+  try {
+      const teacherId = req.params.id;
+      const {firstName, lastName, email, dateOfBirth, contact, gender,address,schoolId } = req.body;
+
+    const existingTeacher = await models.teacherModel.findById({'_id':teacherId });  
+      if(!existingTeacher){
+          return res.status(404).json({
+              success:false,   
+              message: 'Teacher with provided Id does not found'
+          });
+      }
+      if(email){
+          const teacherEmail = await models.teacherModel.findOne({'email': email, '_id':{$ne:teacherId }});
+              if(teacherEmail){
+                  return res.status(404).json({
+                  success:false,   
+                  message: 'Another teacher is existed with same email'
+              });
+          }
+      }
+      //Update the Details of library
+      const updatelTeacher =  await models.teacherModel.findByIdAndUpdate(teacherId ,req.body,{ new: true })
+      return res.status(200).json({
+          success:true,
+          messae:"Teacher is updated successfully",
+          updatelTeacher
+      });
+  } catch (error) {
+    return res.status(500).json({ 
+        success:false,
+        message: 'Internal Server Error', 
+        error: error.message 
+    });
+  }
+};
 
 
 module.exports={
@@ -367,5 +447,6 @@ module.exports={
     getSubjectByTeacherId,
     getSubofClsByTeachId,
     getSubjectdata,
-    getSubjectAndClassdata
+    getSubjectAndClassdata,
+    updateTeacher
 }

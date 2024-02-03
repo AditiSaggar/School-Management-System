@@ -14,20 +14,11 @@ const subjectSchema =  new mongoose.Schema({
         type: String,
         required: true
     },
-    // schoolId: {
-    //     type: String,
-    //     ref: 'schoolModel',
-    //     required: true,
-    // },
-    // classId: {
-    //     type: String,
-    //     ref: 'classModel',
-    //     required: true,
-    // },
     slug:{
         type:String,
         slug:'name'
-    },        
+    }, 
+
 });
 
 const subject= mongoose.model("subjectSchema", subjectSchema);

@@ -15,7 +15,8 @@ const librarySchema =  new mongoose.Schema({
     },
     contact:{
         type:Number,
-        required:true
+        required:true,
+        max:10
     },
     schoolId: {
         type: String,

@@ -47,8 +47,7 @@ const createClass = async (req, res) => {
       });
     }
 
-        let newClass = await classModel.findOne( { name, schoolId })
-        
+      let newClass = await classModel.findOne( { name, schoolId })
         if (!newClass) {
             const newClass = await classModel.create({
                 name,

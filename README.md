@@ -1,4 +1,4 @@
-Project Title :School Management System
+Project Title: School Management System
 Description : This project is for to create the School Management System
 project gitlink:https://github.com/AditiSaggar/School-Management-System
 
@@ -64,7 +64,8 @@ Response:Subject linked to teacher successfully
 Url:http://localhost:3000/school/createlinks
 Response:Teacher,Subject an Class are linked successfully
 
-B)Method used: PUT
+B)UPDATE API 
+Method used: PUT
 1)Update School
 Url:http://localhost:3000/school/update/:id
 Response:School updated successfully
@@ -81,22 +82,32 @@ Response:Section updated successfully
 Url:http://localhost:3000/school/updateStu/:id
 Response:Student updated successfully
 
+5)Update Subject
+Url:
+Response:
+6)Update Class
+Url:
+Response:
+
+7)Update Teacher
+Url:
+Response:
 
 C) Get All Data from School,Class,Section,and Student,
 Method Used:GET
-1) Update School
+1) Get School
 Url:http://localhost:3000/school/getallschool
 Response:"School retrieved successfully"
 
-2) Update Class
+2) Get Class
 Url:http://localhost:3000/school/getallclasses
 Response:Classes retrieved successfully
 
-3) Update Section
+3) Get Section
 Url:http://localhost:3000/school/getallsections
 Response:Section retrieved successfully
 
-4) Update Student
+4) Get Student
 Url:http://localhost:3000/school/getallstudents
 Response:All the Students retrieved successfully
 
@@ -127,5 +138,23 @@ Url:http://localhost:3000/school/getsubclassdata/:teacherId
 Response:Details, It will give the  list of number of subject in the class as teacherId is passed in the param.
 
 E) Library Management System
+GET API
+Method used:GET
 1) Create Library
 Url:
+
+2) Create Category
+
+3) Create Book
+
+
+4)Create book Issue and Returnd
+
+
+F) Update API
+Method Used:PUT
+1)Update library
+
+2)Update Category
+
+3)Update Book

@@ -58,16 +58,17 @@ const createBook = async (req,res)=>{
     }
 }
 
+//GET API
 //Get books by categoryId
 const getBookByCategoryId = async(req,res)=>{
     try {
         const categoryId  = req.params.id;
     
         // Find category by ID
-        const category = await models.categoryModel.findById(categoryId  );
+        const category = await models.categoryModel.findById({_id:categoryId});
     
     if(category) {
-        const books = await models.bookModel.find({categoryId  })
+        const books = await models.bookModel.find({categoryId })
         
         return res.status(200).json({ 
           success: true, 
@@ -92,15 +93,12 @@ const getBookByCategoryId = async(req,res)=>{
       }
 }
 
-//get bookeDetails by bookId
+//get bookDetails by bookId
 const getBookBybookId = async (req,res)=>{
     try {
         const bookId  = req.params.id;
     
-        // Find book by ID
-        //const book = await models.bookModel.findById({_id:bookId});
-    
-    
+        // Find book by bookID
         const bookDetail = await models.bookModel.find({_id:bookId})
         if(bookDetail){
         return res.status(200).json({ 
