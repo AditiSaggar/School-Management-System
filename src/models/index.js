@@ -1,6 +1,7 @@
 const schoolModel = require('./schoolModel'); 
 const studentModel = require('./studentModel');
 const classModel = require('./classModel')
+const sectionModel = require('./sectionModel')
 const subjectModel = require('./subjectModel')
 const teacherModel = require('./teacherModel')
 const teachSubModel = require('./teachSubModel')
@@ -15,6 +16,7 @@ module.exports= {
     schoolModel,
     studentModel,
     classModel,
+    sectionModel,
     subjectModel,
     teacherModel,
     teachSubModel,

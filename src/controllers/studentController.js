@@ -2,6 +2,7 @@ const studentModel = require('../models/studentModel')
 const classModel = require('../models/classModel')
 const sectionModel=require('../models/sectionModel')
 const schoolModel = require('../models/schoolModel')
+const models = require('../models/index')
 const { valStudent} = require ('../validations/schoolValidation')
 
 
@@ -58,9 +59,7 @@ const createStudent = async (req, res) => {
       });
     }
 };
- 
   
-
 //Update Student
 const updateStudent = async (req, res) => {
   const { id } = req.params;
@@ -151,11 +150,50 @@ const getStudentBySchoolId = async (req, res) => {
   }
 };
 
+//Update student ddetail
+const updateStudentDetail = async (req, res) => {
+  try {
+      const studentId = req.params.id;
+      const { name, email,password,address, contact, gender, classId, secId } = req.body;
+
+
+      const isStudent = await models.studentModel.findById({'_id':studentId});  
+        if(!isStudent){
+            return res.status(404).json({
+                success:false,   
+                message: 'Student with provided Id does not found'
+            });
+        }
+        if(email){
+            const studentEmail = await models.studentModel.findOne({'email': email, '_id':{$ne:studentId}});
+                if(studentEmail){
+                    return res.status(404).json({
+                    success:false,   
+                    message: 'Another student is having the same email'
+                });
+            }
+        }
+        //Update the Details of library
+        const updateStudent =  await models.studentModel.findByIdAndUpdate(studentId,req.body,{ new: true })
+        return res.status(200).json({
+            success:true,
+            messae:"Studednt is updated successfully",
+            updateStudent
+        });
+    } catch (error) {
+      return res.status(500).json({ 
+          success:false,
+          message: 'Internal Server Error', 
+          error: error.message 
+      });
+    }
+};
 
 
 module.exports={
     createStudent,
     updateStudent,
     getAllStudents,
-    getStudentBySchoolId
+    getStudentBySchoolId,
+    updateStudentDetail
 }

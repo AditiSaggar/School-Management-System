@@ -124,6 +124,17 @@ router.put('/updateteacher/:id', controllers.teacherController.updateTeacher)
 //Update Class Detail
 router.put('/updateclassdetail/:id',controllers.classController.updateClassDetail)
 
+//Update Section Detail
+router.put('/updatesectiondetail/:id',controllers.sectionController.updateSectionDetail)  //need to check
+
+//Update Book
+router.put('/updatebook/:id',controllers.bookController.updateBook)
+
+//Update Category
+router.put('/updatecategory/:id',controllers.categoryController.updateCategory)
+
+//Update Student
+router.put('/updatestudentdetail/:id',controllers.studentController.updateStudentDetail)
 
 module.exports = router;
 

@@ -1,6 +1,7 @@
 const sectionModel = require('../models/sectionModel')
 const classModel = require('../models/classModel')
 const studentModel=require('../models/studentModel')
+const models = require('../models/index')
 //const { valSection} = require ('../validations/schoolValidation')
 const slugify = require('slugify');
 
@@ -63,8 +64,6 @@ const createSection = async (req, res) => {
         });
     }
 }
-
-
 
 //update section
 const updateSection= async (req, res) => {
@@ -162,12 +161,51 @@ const getStudentBySectionId = async (req, res) => {
     }
   };
 
+//Update section ddetail
+const  updateSectionDetail  = async (req, res) => {
+  try {
+      const sectionId = req.params.id;
+      const {name,classId,slug} = req.body;
 
+    const section = await models.sectionModel.findOne({_id:sectionId});
+    if(!section){
+      return res.status(404).json({
+          success: false, 
+          message: 'Section with provided Id does not found' 
+    });
+  }
+    if(slug){
+      const checkSection = await models.sectionModel.findOne({'slug': slug, '_id':{$ne:sectionId}});
+      if(checkSection){
+      return res.status(404).json({
+          success:false,
+          message:'Slug already is in use.Cant Update', 
+          checkSection
+        });
+    }
+  }
+    //Update the Details of Class
+    const updatedSection =  await models.sectionModel.findByIdAndUpdate( sectionId,req.body,{ new: true })
+    return res.status(200).json({
+        success:true,
+        messae:"Section updated successfully",
+        updatedSection
+    });
+
+  } catch (error) {
+    return res.status(500).json({ 
+        status:false,
+        message: 'Internal Server Error', 
+        error: error.message 
+    });
+  }
+}; 
 
 
 module.exports = {
     createSection,
     updateSection,
     getAllSections,
-    getStudentBySectionId 
+    getStudentBySectionId,
+    updateSectionDetail 
 }

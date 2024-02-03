@@ -157,11 +157,49 @@ const getBookBylibraryId = async(req,res)=>{
       }
 }
 
+//update Books
+const updateBook = async (req, res) => {
+  try {
+      const bookId = req.params.id;
+      const{title, author, description,libraryId,categoryId,bookFee,slug} = req.body;
+
+    const existingBook = await models.bookModel.findById({'_id':bookId})
+    if(!existingBook){
+      return res.status(404).json({
+          success: false, 
+          message: 'Book with provided Id does not found' 
+    })
+  }
+    if(slug){
+      const checkbook = await models.bookModel.findOne({'slug': slug, '_id':{$ne:bookId}});
+      return res.status(404).json({
+          success:false,
+          message:'Slug already is in use', 
+          checkbook
+        });
+    }
+    //Update the Details of Class
+    const updatedBook =  await models.bookModel.findByIdAndUpdate(bookId,req.body,{ new: true })
+    return res.status(200).json({
+        success:true,
+        messae:"Book is updated successfully",
+        updatedBook
+    });
+
+  } catch (error) {
+    return res.status(500).json({ 
+        status:false,
+        message: 'Internal Server Error', 
+        error: error.message 
+    });
+  }
+}; 
 
 module.exports={
     createBook,
     getBookByCategoryId,
     getBookBybookId,
-    getBookBylibraryId
+    getBookBylibraryId,
+    updateBook
 }
 
