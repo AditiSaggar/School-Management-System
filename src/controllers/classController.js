@@ -216,6 +216,7 @@ const updateClassDetail = async (req, res) => {
       const classId = req.params.id;
       const {name, schoolId,isActive,slug} = req.body
 
+    // Checking class is existed or not
     const existingclass = await models.classModel.findById({'_id':classId})
     if(!existingclass){
       return res.status(404).json({

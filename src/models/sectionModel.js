@@ -16,9 +16,22 @@ const sectionSchema =  new mongoose.Schema({
         ref: 'classModel',
         required: true,
     },  
+    schoolId: {
+        type: String,
+        ref: 'schoolModel',
+        required: true,
+    },
     slug:{
         type:String,
         slug:'name'
+    },
+    isActive:{
+        type:Boolean,
+        default:true, 
+    },
+    isDelete:{
+        type:Boolean,
+        default:false, 
     },
     timeStamp
 });

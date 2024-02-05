@@ -7,7 +7,7 @@ const {valLoginSchool} = require('../validations/schoolValidation')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const models = require('../models/index')
-
+const multer = require('multer')
 
 // Create School
 const createSchool = async(req,res) =>{
@@ -21,7 +21,7 @@ const createSchool = async(req,res) =>{
     }
 
     // Check if school with the given email already exists
-        const checkSchool = await schoolModel.findOne({ email: req.body.email });
+        const checkSchool = await models.schoolModel.findOne({ $and: [{'email': req.body.email },{'isDeleted':false}] });
         if (checkSchool) {
             return res.status(400).json({
                 status: false,
@@ -41,7 +41,7 @@ const createSchool = async(req,res) =>{
             contact: req.body.contact,
             image: req.body.image,
             banner:req.body.image,
-            isActive:req.body.isActive
+            isActive:req.body.isActive,
         });
     // const{name,address,email,password,contact,image,banner,isActive}=req.body;
     //     const newSchool =  new schoolModel({  
@@ -146,7 +146,7 @@ const updateSchool= async (req, res) => {
 };
 
 
-//Update School with email check
+//Update School with email check will update the detail other than email 
 const updatedSchool= async (req, res) => {
     try {
         const schoolId = req.params.id;
@@ -166,9 +166,9 @@ const updatedSchool= async (req, res) => {
                 return res.status(404).json({
                     success:false,   
                     message: 'Another School is existed with same email'
-              });
+                });
+            }
         }
-    }
         
         const updateSchool =  await models.schoolModel.findByIdAndUpdate(schoolId,req.body,{ new: true })
         return res.status(200).json({
@@ -327,6 +327,126 @@ const getAllSchool = async (req, res) =>{
     }
 }
 
+//Soft Delete School
+const deleteSchool = async(req,res)=>{
+    try {
+        const schoolId = req.params.id;
+        const existingSchool = await schoolModel.findById({'_id':schoolId})
+        if(existingSchool){
+            req.body.isActive = false;
+            req.body.isDelete = true;
+            existingSchool.set(req.body);
+
+            const deletedSchool = await existingSchool.save()
+            // const schoolStatus = await models.schoolModel.find({'_id':schoolId}, req.body, { new: true });
+            return res.status(200).json({
+                success:true,
+                message:'School is soft deleted successfully',
+                deletedSchool
+            })
+        }else{
+            return res.status(404).json({
+                success:false,
+                error:'School with provided id doesnot exist'           
+            })
+        }
+ 
+    } catch (error) {
+        console.error("Error deleting School:", error);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        });
+    }
+}
+
+//Soft delete all the record
+//Hierarchy soft delete
+const deleteSchoolRecord = async (req, res) => {
+    try {
+      const schoolId = req.params.id;
+  
+      // Find the school is existed
+      const existingSchool = await models.schoolModel.findById(schoolId);
+  
+      if (!existingSchool) {
+        return res.status(404).json({
+          success: false,
+          error: 'School with provided id does not exist',
+        });
+      }
+  
+      // Soft delete the school
+            req.body.isActive = false;
+            req.body.isDelete = true;
+            existingSchool.set(req.body);
+            await existingSchool.save();
+  
+      // Soft delete related classes
+      const classes = await models.classModel.updateMany({ schoolId }, {
+        
+        $set: {isActive: false,isDelete: true,},
+        
+      });
+      
+  
+      // Soft delete  sections
+      const sections = await models.sectionModel.updateMany({ schoolId }, {
+        $set: {
+          isActive: false,
+          isDelete: true,
+        },
+      });
+  
+      //Soft delete  students
+      const students = await models.studentModel.updateMany({ schoolId }, {
+        $set: {
+          isActive: false,
+          isDelete: true,
+        },
+        
+      });
+  
+      return res.status(200).json({
+        success: true,
+        message: 'Hierarchy soft deleted successfully',
+        deletedSchool: existingSchool,
+        deletedClasses: classes,
+        deletedSections: sections,
+        deletedStudents: students,
+      });
+    } catch (error) {
+      console.error("Error deleting hierarchy Data:", error);
+      return res.status(500).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  };
+  
+
+
+
+//Upload Images
+const uploadImage = async(req,res)=>{
+    var payload  = req.body;
+   
+        if(req.file) var imgUrl = `storage/images/${req.file.filename}`;
+    try {
+       const schoolImage = await new image(payload).save();
+       return res.status().json({
+        success: true,
+        message: 'successful',
+        data:schoolImage
+      });
+    } catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: error.message,
+        });
+    }
+}
+
 
 
 module.exports= {
@@ -335,5 +455,7 @@ module.exports= {
     updateSchool,
     getAllData,
     getAllSchool,
-    updatedSchool
+    updatedSchool,
+    deleteSchool,
+    deleteSchoolRecord
 }

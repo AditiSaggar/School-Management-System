@@ -9,7 +9,7 @@ const slugify = require('slugify');
 const createSection = async (req, res) => {
 
     try {
-        const { name, classId } = req.body;
+        const { name, classId,schoolId, } = req.body;
 
         const isClass = await classModel.findOne({ '_id': classId });
           
@@ -35,12 +35,13 @@ const createSection = async (req, res) => {
       });
     }
 
-        let newSection = await sectionModel.findOne( { name, classId })
+        let newSection = await sectionModel.findOne( { name, classId,schoolId, })
         
         if (!newSection) {
             const newSection = await sectionModel.create({
                 name,
                 classId,
+                schoolId,
                 slug
             })
 
@@ -165,7 +166,7 @@ const getStudentBySectionId = async (req, res) => {
 const  updateSectionDetail  = async (req, res) => {
   try {
       const sectionId = req.params.id;
-      const {name,classId,slug} = req.body;
+      const {name,schoolId,classId,slug} = req.body;
 
     const section = await models.sectionModel.findOne({_id:sectionId});
     if(!section){

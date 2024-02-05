@@ -9,7 +9,7 @@ const { valStudent} = require ('../validations/schoolValidation')
 //Create Student
 const createStudent = async (req, res) => {
     try {
-        const { name, email,password,address, contact, gender, classId, secId } = req.body;
+        const { name, email,password,address, contact, gender,schoolId, classId, secId } = req.body;
         const { error } = valStudent.validate(req.body);
         // console.log("error", error)
         if (error) {

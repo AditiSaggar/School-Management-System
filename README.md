@@ -151,10 +151,14 @@ Url:
 4)Create book Issue and Returnd
 
 
-F) Update API
+F) Update API 
 Method Used:PUT
-1)Update library
+1)Update School
 
-2)Update Category
+2)Update Class
 
-3)Update Book
+3)Update Section
+
+4) Update Student
+
+5) Update Library

@@ -24,6 +24,14 @@ const classSchema =  new mongoose.Schema({
         type:String,
         slug:'name'
     },
+    isActive:{
+        type:Boolean,
+        default:true, 
+    },
+    isDelete:{
+        type:Boolean,
+        default:false, 
+    },
     timeStamp       
 });
 

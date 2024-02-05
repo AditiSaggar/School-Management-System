@@ -34,6 +34,11 @@ const studentSchema =  new mongoose.Schema({
     gender:{
         type:Boolean,        
     },
+    schoolId: {
+        type: String,
+        ref: 'schoolModel',
+        required: true,
+    },
     classId: {
         type:String,
         ref: 'classModel',
@@ -43,7 +48,14 @@ const studentSchema =  new mongoose.Schema({
         type:String,
         ref: 'sectionModel',
         required: true,
-    }, 
+    }, isActive:{
+        type:Boolean,
+        default:true, 
+    },
+    isDelete:{
+        type:Boolean,
+        default:false, 
+    },
     timeStamp
 
 });

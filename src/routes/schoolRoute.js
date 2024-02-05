@@ -136,5 +136,12 @@ router.put('/updatecategory/:id',controllers.categoryController.updateCategory)
 //Update Student
 router.put('/updatestudentdetail/:id',controllers.studentController.updateStudentDetail)
 
+
+//Delete School
+router.delete('/deleteschool/:id',controllers.schoolController.deleteSchool)
+
+//
+router.delete('/deleteschoolecord/:id',controllers.schoolController.deleteSchoolRecord)
+
 module.exports = router;
 

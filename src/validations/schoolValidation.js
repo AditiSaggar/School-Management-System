@@ -37,6 +37,7 @@ const valStudent = Joi.object({
     password: Joi.string().min(6).required(),
     contact:Joi.number().integer().min(100000000).max(9999999999).required(),
     gender:Joi.string().required(),
+    schoolId:Joi.string().required(),
     classId:Joi.string().required(),
     secId:Joi.string().required(),
 

@@ -19,7 +19,7 @@ const schoolSchema =  new mongoose.Schema({
     email: {
         type:String,
         required: true,
-        unique:true
+        //unique:true
     },
     password: {
         type:String,
@@ -40,11 +40,16 @@ const schoolSchema =  new mongoose.Schema({
     },
     isActive:{
         type:Boolean,
-        default:true
+        default:true, 
+    },
+    isDelete:{
+        type:Boolean,
+        default:false, 
     },
     timeStamp
      
 });
+
 
 const school = mongoose.model("schoolModel", schoolSchema);
 module.exports = school;
