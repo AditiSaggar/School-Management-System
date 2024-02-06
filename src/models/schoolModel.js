@@ -9,34 +9,34 @@ const schoolSchema =  new mongoose.Schema({
     },
     name: {
         type:String,
-        required: true
+        //required: true
     },
     address: {
         type:String,
-        required: true,
+        //required: true,
         
     },
     email: {
         type:String,
-        required: true,
+        //required: true,
         //unique:true
     },
     password: {
         type:String,
-        required: true
+       // required: true
     },
     contact: {
         type: Number,
-        required: true,
+       // required: true,
         unique:true
     },
     image: {
         type:String,
-        required:true
+        //required:true
     },
     banner:{
         type:String,
-        required:true
+        //required:true
     },
     isActive:{
         type:Boolean,

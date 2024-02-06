@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const controllers = require('../controllers/index')
 const auth = require('../middleware/verify')
+const checkFile = require('../middleware/multerMiddleware')
 
 //Create School
 router.post('/signup', controllers.schoolController.createSchool)
@@ -140,8 +141,15 @@ router.put('/updatestudentdetail/:id',controllers.studentController.updateStuden
 //Delete School
 router.delete('/deleteschool/:id',controllers.schoolController.deleteSchool)
 
-//
+//Hierarchy soft delete
 router.delete('/deleteschoolecord/:id',controllers.schoolController.deleteSchoolRecord)
+
+//Upload sinlge image
+router.post('/singleimage',checkFile.single('image'),controllers.schoolController.uploadSingleImage)
+
+//upload multiple images
+router.post('/multipleimage',checkFile.array("images",5),controllers.schoolController.uploadMultipleImage)
+
 
 module.exports = router;
 

@@ -7,7 +7,10 @@ const {valLoginSchool} = require('../validations/schoolValidation')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const models = require('../models/index')
-const multer = require('multer')
+const { equal } = require('joi')
+const checkFile = require('../middleware/multerMiddleware')
+
+
 
 // Create School
 const createSchool = async(req,res) =>{
@@ -32,7 +35,7 @@ const createSchool = async(req,res) =>{
         // const salt = 10;
         const hashedPassword = await bcrypt.hash(req.body.password,10);
 
-    // Create new School
+        // Create new School
         const newSchool = new schoolModel({          
             name: req.body.name,
             address: req.body.address,
@@ -389,22 +392,14 @@ const deleteSchoolRecord = async (req, res) => {
         
       });
       
-  
       // Soft delete  sections
       const sections = await models.sectionModel.updateMany({ schoolId }, {
-        $set: {
-          isActive: false,
-          isDelete: true,
-        },
+        $set: {isActive: false,isDelete: true, },
       });
   
       //Soft delete  students
       const students = await models.studentModel.updateMany({ schoolId }, {
-        $set: {
-          isActive: false,
-          isDelete: true,
-        },
-        
+        $set: {isActive: false,isDelete: true,},  
       });
   
       return res.status(200).json({
@@ -422,31 +417,105 @@ const deleteSchoolRecord = async (req, res) => {
         message: error.message,
       });
     }
-  };
-  
-
+};
 
 
 //Upload Images
-const uploadImage = async(req,res)=>{
-    var payload  = req.body;
-   
-        if(req.file) var imgUrl = `storage/images/${req.file.filename}`;
+const uploadSingleImage = async (req, res) => {
     try {
-       const schoolImage = await new image(payload).save();
-       return res.status().json({
-        success: true,
-        message: 'successful',
-        data:schoolImage
-      });
+
+        // const image = req.file.path
+        req.body.image;
+        // Create new School 
+        const newSchool = new schoolModel({
+            name: req.body.name,
+            address: req.body.address,
+            email: req.body.email,
+            contact: req.body.contact,
+            image: req.file.path, 
+            banner: req.body.banner,
+            isActive: req.body.isActive,
+        });
+
+        // Check if image was uploaded
+        if (!req.file) {
+            return res.status(400).json({
+                status: false,
+                error: "Image not uploaded"
+            });
+        }
+
+        // Save the new school
+        const savedSchool = await newSchool.save();
+        if (savedSchool) {
+            return res.status(201).json({
+                status: true,
+                data: savedSchool,
+                message: "School with image created successfully"
+            });
+        } else {
+            return res.status(400).json({
+                status: false,
+                error: "Failed to save school image"
+            });
+        }
     } catch (error) {
+        console.error("Error in creating School:", error);
         return res.status(500).json({
             status: false,
-            message: error.message,
+            message: error.message
         });
     }
-}
+};
 
+//Multiple images
+const uploadMultipleImage = async (req, res) => {
+    try {
+    if(!req.files ||req.files.length === 0){
+        return res.status(400).json({
+            success: false,
+            message: error.message,
+            error: "Upload atleast the 5 Images",
+            data:newSchoolImage
+        });
+    }
+
+        const image = req.file.path
+        req.body.image;
+        // Create new School 
+        const newSchoolImage = new schoolModel({
+            name: req.body.name,
+            address: req.body.address,
+            email: req.body.email,
+            contact: req.body.contact,
+            image: req.file.path, 
+            banner: req.body.banner,
+            isActive: req.body.isActive,
+        });
+
+        // Check if image was uploaded
+        if (!req.file) {
+            return res.status(400).json({
+                status: false,
+                message: error.message,
+                error: "Image not uploaded",
+                data:newSchoolImage
+            });
+        }
+        return res.status(200).json({
+            success:true,
+            message:'image uploaed successfully'
+        })
+
+        
+    } catch (error) {
+        console.error("Error uploading lmages:", error);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
 
 
 module.exports= {
@@ -457,5 +526,7 @@ module.exports= {
     getAllSchool,
     updatedSchool,
     deleteSchool,
-    deleteSchoolRecord
+    deleteSchoolRecord,
+    uploadSingleImage,
+    uploadMultipleImage
 }
