@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken')
 const models = require('../models/index')
 const { equal } = require('joi')
 const checkFile = require('../middleware/multerMiddleware')
+const school = require('../models/schoolModel')
 
 
 
@@ -148,7 +149,6 @@ const updateSchool= async (req, res) => {
   }
 };
 
-
 //Update School with email check will update the detail other than email 
 const updatedSchool= async (req, res) => {
     try {
@@ -187,8 +187,7 @@ const updatedSchool= async (req, res) => {
       });
     }
 };
-
-  
+ 
 //get All data of school using lookup
 const getAllData = async (req, res) => {
     try {
@@ -383,13 +382,11 @@ const deleteSchoolRecord = async (req, res) => {
             req.body.isActive = false;
             req.body.isDelete = true;
             existingSchool.set(req.body);
-            await existingSchool.save();
+            // await existingSchool.save();
   
       // Soft delete related classes
       const classes = await models.classModel.updateMany({ schoolId }, {
-        
         $set: {isActive: false,isDelete: true,},
-        
       });
       
       // Soft delete  sections
@@ -404,11 +401,23 @@ const deleteSchoolRecord = async (req, res) => {
   
       return res.status(200).json({
         success: true,
-        message: 'Hierarchy soft deleted successfully',
-        deletedSchool: existingSchool,
-        deletedClasses: classes,
-        deletedSections: sections,
-        deletedStudents: students,
+        message: 'Hierarchy of school soft deleted successfully',
+        deletedStudents:({
+            message:'Students deleted successfully',
+            data:students
+        }),
+        deletedSections:({
+            message:'Sections deleted successfully',
+            data:sections
+        }), 
+        deletedClasses:({
+            message:'Sections deleted successfully',
+            data:classes,
+        }), 
+        deletedSchool:({
+            message:'School deleted successfully',
+            data:existingSchool,
+        }) 
       });
     } catch (error) {
       console.error("Error deleting hierarchy Data:", error);
@@ -418,7 +427,6 @@ const deleteSchoolRecord = async (req, res) => {
       });
     }
 };
-
 
 //Upload Images
 const uploadSingleImage = async (req, res) => {
@@ -449,9 +457,9 @@ const uploadSingleImage = async (req, res) => {
         const savedSchool = await newSchool.save();
         if (savedSchool) {
             return res.status(201).json({
-                status: true,
+                success: true,
+                message: "School image uploaded successfully",
                 data: savedSchool,
-                message: "School with image created successfully"
             });
         } else {
             return res.status(400).json({
@@ -471,11 +479,12 @@ const uploadSingleImage = async (req, res) => {
 //Multiple images
 const uploadMultipleImage = async (req, res) => {
     try {
-    if(!req.files ||req.files.length === 0){
+        const images = req.files
+    if(!images ||images.length === 0){
         return res.status(400).json({
             success: false,
             message: error.message,
-            error: "Upload atleast the 5 Images",
+            error: "Upload atleast 5 Images",
             data:newSchoolImage
         });
     }
@@ -488,18 +497,19 @@ const uploadMultipleImage = async (req, res) => {
             address: req.body.address,
             email: req.body.email,
             contact: req.body.contact,
-            image: req.file.path, 
+            image: images.path, 
             banner: req.body.banner,
             isActive: req.body.isActive,
         });
 
+        const savedSchool = await newSchoolImage.save();
         // Check if image was uploaded
         if (!req.file) {
             return res.status(400).json({
                 status: false,
                 message: error.message,
                 error: "Image not uploaded",
-                data:newSchoolImage
+                data:savedSchool
             });
         }
         return res.status(200).json({
@@ -516,6 +526,7 @@ const uploadMultipleImage = async (req, res) => {
         });
     }
 };
+
 
 
 module.exports= {
